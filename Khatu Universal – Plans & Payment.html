@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Khatu Universal – Plans &amp; Payment</title>
+<style>
+:root{--bg:#f0f5fb;--card:#fff;--tx:#1c2a3f;--mu:#6b7a90;--bd:#e1e9f3;--in:#f6f9fd;--ac:#00baf2;--nv:#002e6e;--ok:#16a34a;--er:#dc2626;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.45}
+.wrap{max-width:980px;margin:0 auto;padding:16px}
+.nav{display:flex;gap:8px;margin-bottom:10px}
+.navb{flex:1;border:1px solid #cfdcec;background:#fff;color:var(--nv);border-radius:10px;padding:11px 4px;font-weight:700;font-size:13px;cursor:pointer}
+.navb:active{background:#e8f8fe}
+header{background:var(--nv);margin:0 -16px 16px;padding:18px 16px;border-radius:0 0 18px 18px;perspective:600px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+h1{margin:0;font-size:21px;color:#fff;transform-origin:50% 100%}
+.sub{font-size:12px;color:#8fd9f7}
+@keyframes flipx{from{transform:rotateX(90deg);opacity:0}to{transform:none;opacity:1}}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px;box-shadow:0 1px 5px rgba(0,46,110,.08);margin-bottom:16px}
+h2{font-size:16px;margin:0 0 12px}
+.grid{display:none;gap:16px;grid-template-columns:1fr}
+@media(min-width:760px){.grid{grid-template-columns:1fr 1fr}}
+.hgrid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.pcard{border:2px solid var(--pc);border-radius:14px;overflow:hidden;background:#fff;cursor:pointer;text-align:left;padding:0;font:inherit;color:inherit;display:flex;flex-direction:column}
+.pcard .h{background:var(--pc);color:#fff;font-weight:800;letter-spacing:1.5px;font-size:12px;padding:7px 12px}
+.pcard .p{font-size:26px;font-weight:800;padding:8px 12px 0}.pcard .p small{font-size:12px;color:var(--mu);font-weight:600}
+.pcard ul{list-style:none;margin:6px 12px 8px;padding:0;font-size:13px;flex:1}.pcard li:before{content:"";display:inline-block;width:5px;height:9px;border:solid var(--pc);border-width:0 2px 2px 0;transform:rotate(45deg);margin-right:9px;position:relative;top:-2px}
+.pcard .b{margin:0 12px 12px;background:var(--pc);color:#fff;text-align:center;padding:9px;border-radius:9px;font-weight:700;font-size:13px}
+.pcard:active{transform:scale(.98)}
+.pcard.max{grid-column:1/-1;background:linear-gradient(135deg,#ff1744,#b71c1c);border-color:#ff1744;color:#fff}
+.max .h{background:rgba(0,0,0,.22)}.max .p small{color:#ffd9e0}.max li:before{border-color:#fff}.max .b{background:#fff;color:#e11d48}
+label{display:block;font-size:13px;color:var(--mu);margin:14px 0 6px}
+input{width:100%;padding:13px 14px;border-radius:10px;border:1px solid #cfdcec;background:#fff;color:var(--tx);font-size:16px;outline:none}
+input:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(0,186,242,.15)}
+input[readonly]{background:var(--in);font-weight:700}
+.btn{border:0;border-radius:10px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;color:#fff;background:var(--ac);width:100%}
+.btn:active{transform:scale(.98)}
+.btn.app{background:#fff;color:var(--nv);border:1px solid var(--ac)}.btn.app.full{background:var(--ac);color:#fff}
+.apps{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}.apps .full{grid-column:1/-1}
+#sel{border-left:6px solid var(--pc,#00baf2);background:var(--in);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;font-size:15px}
+#sel span{font-size:12px;color:var(--mu)}
+.hint{font-size:12px;color:var(--mu);margin-top:8px}
+.cap{text-align:center;font-size:13px;color:var(--mu)}
+.qr{display:grid;place-items:center;margin:6px auto 10px}
+#qr{background:#fff;padding:12px;border-radius:14px;border:1px solid var(--bd);width:204px;height:204px;display:grid;place-items:center;cursor:pointer}
+.upi{display:flex;gap:8px;align-items:center;background:#f0f9fe;border:1px dashed var(--ac);border-radius:12px;padding:8px 8px 8px 14px;margin-top:12px}
+.upi code{flex:1;font-size:14px;word-break:break-all;font-weight:600}
+.copy{border:0;background:var(--ac);color:#fff;border-radius:8px;padding:9px 14px;font-weight:600;cursor:pointer}
+.steps{font-size:13px;color:var(--mu);margin:0;padding-left:18px}
+#mine{display:none;align-items:center;justify-content:space-between;gap:10px;border-left:6px solid var(--pc);background:#fff;border-radius:12px;padding:12px;margin-bottom:16px;border:1px solid var(--bd);border-left:6px solid var(--pc);font-size:14px;font-weight:600}
+.planbox{max-width:560px;margin:0 auto 16px;text-align:center}
+.pb{display:inline-block;color:#fff;font-size:12px;font-weight:800;letter-spacing:1px;padding:5px 12px;border-radius:99px;margin-bottom:10px}
+.rows{text-align:left;margin:12px 0}.rows div{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd);font-size:14px}.rows span{color:var(--mu)}.rows b{text-align:right;word-break:break-word}
+.bar{height:8px;background:var(--in);border-radius:99px;overflow:hidden;border:1px solid var(--bd);margin-top:6px}.bar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--ac),var(--nv))}
+#pret{display:none;align-items:center;justify-content:center;gap:8px;margin:12px 0;font-size:14px;background:var(--in);padding:10px;border-radius:10px}
+.prow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-left:4px solid var(--pc);background:var(--in);border-radius:10px;margin-bottom:8px;font-size:14px;text-align:left}
+.prow b{letter-spacing:2px}.prow small{display:block;color:var(--mu);font-size:12px}.pamt2{font-weight:800;color:var(--pc)}
+details summary{cursor:pointer;font-weight:700;font-size:15px;color:var(--nv)}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px;min-width:460px}th,td{padding:9px 8px;border-bottom:1px solid var(--bd);text-align:left}th{color:var(--mu);font-weight:600}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;background:var(--pc)}
+.disc{margin:18px 0 8px;font-size:12px;color:var(--mu);text-align:center;border-top:1px solid var(--bd);padding-top:14px}
+.modal{position:fixed;inset:0;background:rgba(10,20,45,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
+.modal.show{display:flex}
+.box{background:#fff;border-radius:18px;padding:26px 22px;max-width:380px;width:100%;text-align:center}
+.ic{width:62px;height:62px;border-radius:50%;margin:0 auto 12px;display:grid;place-items:center;font-size:30px;color:#fff}
+.box h3{margin:0 0 8px;font-size:18px}.box p{margin:0 0 18px;color:var(--mu);font-size:14px}
+select{width:100%;padding:13px 14px;border-radius:10px;border:1px solid #cfdcec;background:#fff;color:var(--tx);font-size:16px}
+.navb svg,.btn svg{vertical-align:-3px;margin-right:6px}
+.pcard{cursor:default}
+.b2{display:flex;gap:8px;margin:0 12px 8px}
+.pcard .b2 .b{margin:0;border:0;cursor:pointer;font:inherit;font-weight:700;font-size:13px;padding:9px 4px;border-radius:9px;background:var(--pc);color:#fff;flex:1}
+.pcard.max .b2 .b{background:#fff;color:#e11d48}
+.vm{margin:0 12px 12px;border:1px solid var(--pc);background:transparent;color:var(--pc);border-radius:9px;padding:8px;font:inherit;font-weight:700;font-size:13px;cursor:pointer}
+.max .vm{color:#fff;border-color:#fff}
+.tabs{display:flex;gap:8px;margin-bottom:12px}
+.tab{flex:1;padding:11px;border-radius:10px;border:1px solid #cfdcec;background:#fff;color:var(--nv);font-weight:700;cursor:pointer;font-size:14px}
+.tab.on{background:var(--nv);color:#fff;border-color:var(--nv)}
+.dbtn{border:0;border-radius:10px;padding:13px;font-weight:700;font-size:14px;cursor:pointer;flex:1;background:var(--pc);color:#fff}
+.dbtn.o{background:#fff;color:var(--nv);border:1px solid #cfdcec}
+button{position:relative;overflow:hidden;transition:transform .15s,box-shadow .2s,filter .2s}
+button:active{transform:scale(.95)}
+@media (hover:hover){button:hover{filter:brightness(1.06)}.btn:hover,.dbtn:hover,.pcard .b2 .b:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(0,46,110,.18)}}
+.rip{position:absolute;border-radius:50%;background:currentColor;opacity:.25;transform:scale(0);animation:rip .6s ease-out;pointer-events:none}
+@keyframes rip{to{transform:scale(2.6);opacity:0}}
+@keyframes fadeup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+@keyframes boxin{from{transform:scale(.9);opacity:0}to{transform:none;opacity:1}}
+.pcard{animation:fadeup .45s ease backwards;animation-delay:calc(var(--i,0) * 60ms)}
+.pcard .p{display:block;transform-origin:left center;animation:pop .5s ease backwards;animation-delay:calc(var(--i,0) * 60ms + 150ms);transition:transform .2s}
+.pcard:hover .p{transform:scale(1.06)}
+#sel b{display:inline-block;animation:pop .45s ease backwards}
+#homeview,#detailview,#planview,#paywrap{animation:fadeup .35s ease backwards}
+.modal.show .box{animation:boxin .25s ease}
+.tab{transition:background .2s,color .2s,transform .15s}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+header{background:linear-gradient(135deg,#002e6e,#0050b3);box-shadow:0 4px 14px rgba(0,46,110,.25)}
+.dnw{display:flex;align-items:center;gap:8px;color:#cfe9ff;font-size:12px;font-weight:700}
+.dl{cursor:pointer;opacity:.75}
+.dn{width:64px;height:32px;border-radius:16px;border:0;padding:0;background:linear-gradient(135deg,#7ed0f7,#d7f1ff);box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);transition:background .5s;flex:none}
+.knob{position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#ffd23f;box-shadow:0 0 12px #ffd23f;transition:left .5s cubic-bezier(.5,1.6,.5,1),background .5s,box-shadow .5s,transform .6s}
+.dn:after{content:"";position:absolute;left:10px;top:8px;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:12px 10px 0 #fff,22px 2px 0 #fff;opacity:0;transition:opacity .5s}
+:root[data-theme="dark"]{--bg:#0a1325;--card:#111e38;--tx:#e8f0fb;--mu:#93a6c3;--bd:#22365a;--in:#0e1a33;--nv:#cfe9ff}
+:root[data-theme="dark"] .dn{background:linear-gradient(135deg,#0b1a3a,#2b3a73)}
+:root[data-theme="dark"] .dn:after{opacity:1}
+:root[data-theme="dark"] .knob{left:35px;background:radial-gradient(circle at 30% 35%,#c9cfe6 0 14%,transparent 15%),radial-gradient(circle at 65% 60%,#c9cfe6 0 10%,transparent 11%),#eef1ff;box-shadow:0 0 10px rgba(220,225,255,.6);transform:rotate(360deg)}
+:root[data-theme="dark"] header{background:linear-gradient(135deg,#07142e,#12306b)}
+:root[data-theme="dark"] .navb,:root[data-theme="dark"] .tab,:root[data-theme="dark"] .btn.app,:root[data-theme="dark"] .dbtn.o,:root[data-theme="dark"] #mine,:root[data-theme="dark"] .box,:root[data-theme="dark"] .pcard:not(.max){background:var(--card);border-color:var(--bd)}
+:root[data-theme="dark"] .pcard:not(.max){border-color:var(--pc)}
+:root[data-theme="dark"] .btn.app{color:var(--ac)}
+:root[data-theme="dark"] .btn.app.full{background:var(--ac);color:#fff}
+:root[data-theme="dark"] .tab.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+:root[data-theme="dark"] .dbtn.o{color:var(--tx)}
+:root[data-theme="dark"] input,:root[data-theme="dark"] select{background:var(--in);color:var(--tx);border-color:var(--bd)}
+:root[data-theme="dark"] .upi{background:#0e2a45}
+:root[data-theme="dark"] .box{color:var(--tx)}
+body,.card,input,select,.navb,.tab,.pcard,header{transition:background-color .4s,color .4s,border-color .4s}
+.box{position:relative;overflow:hidden}
+.coin{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#ffe082,#ffb300);border:4px solid #ffca28;display:grid;place-items:center;font-weight:800;color:#8a5a00;font-size:28px;animation:coinf 1s linear infinite;box-shadow:0 4px 14px rgba(255,179,0,.5)}
+@keyframes coinf{from{transform:rotateY(0)}to{transform:rotateY(360deg)}}
+.ic.ok{animation:pop .5s ease,ringp 1s ease-out .3s}
+@keyframes ringp{from{box-shadow:0 0 0 0 rgba(22,163,74,.5)}to{box-shadow:0 0 0 26px rgba(22,163,74,0)}}
+@keyframes drawp{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+.okc path{stroke-dasharray:1;stroke-dashoffset:1;animation:drawp .5s ease .35s forwards}
+.cf{position:absolute;top:-12px;width:8px;height:12px;border-radius:2px;animation:cfall 1.6s ease-in forwards;pointer-events:none}
+@keyframes cfall{to{top:110%;opacity:.2}}
+.draw svg path{stroke-dasharray:1;animation:drawp .7s ease forwards}
+.spin svg{animation:rot .65s ease}
+@keyframes rot{to{transform:rotate(360deg)}}
+.hero{background:linear-gradient(135deg,#002e6e,#00a3d9);color:#fff;border-radius:16px;padding:20px;margin-bottom:14px;box-shadow:0 6px 18px rgba(0,46,110,.2)}
+.hero h2{font-size:22px;margin:0 0 6px;color:#fff}.hero p{margin:0 0 12px;font-size:14px;opacity:.92}
+.trust{display:flex;flex-wrap:wrap;gap:8px}.trust span{background:rgba(255,255,255,.16);border-radius:99px;padding:6px 11px;font-size:12px;font-weight:700}.trust svg{vertical-align:-3px;margin-right:5px}
+.steps2{display:none;align-items:center;justify-content:center;gap:8px;margin:0 0 14px;font-size:13px;font-weight:700;color:var(--mu)}
+.st{display:flex;align-items:center;gap:6px}.st i{width:24px;height:24px;border-radius:50%;background:var(--bd);color:var(--mu);display:grid;place-items:center;font-style:normal;font-size:12px;transition:background .3s}
+.st.on{color:var(--tx)}.st.on i{background:var(--ac);color:#fff}.st.done i{background:var(--ok);color:#fff}.ln{width:28px;height:2px;background:var(--bd)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="nav">
+  <button class="navb" id="nhome" type="button" data-ico="home">Home Page</button>
+  <button class="navb" id="nplan" type="button" data-ico="plan">Plan Page</button>
+  <button class="navb" id="nrefresh" type="button" data-ico="refresh">Refresh</button>
+</div>
+<header><div><h1 id="flip">Khatu Payment</h1><div class="sub">Khatu Universal · v9.6</div></div><div class="dnw"><span class="dl" data-t="light">Day</span><button class="dn" id="dn" type="button" aria-label="Switch between day and night"><i class="knob"></i></button><span class="dl" data-t="dark">Night</span></div></header>
+
+<div class="steps2" id="steps"><div class="st done"><i>1</i>Plan</div><div class="ln"></div><div class="st" id="s2"><i>2</i>Pay</div><div class="ln"></div><div class="st" id="s3"><i>3</i>Receipt</div></div>
+<section id="homeview">
+  <div class="hero"><h2>Upgrade in under a minute</h2><p>Pick a plan, pay with any UPI app and get your plan slip right away.</p><div class="trust"><span data-ico="shield">Secure UPI payment</span><span data-ico="bolt">Quick plan slip</span><span data-ico="mail">Receipt on email</span></div></div>
+  <div id="toolnote" class="card" style="display:none;margin-bottom:12px;font-weight:700;color:var(--nv)"></div>
+  <div id="mine"><span id="minetx"></span><button class="copy" id="mineb" type="button">View Plan</button></div>
+  <div class="card">
+    <div class="tabs"><button class="tab on" id="tabm" type="button">Main</button><button class="tab" id="tabg" type="button">Groceries</button><button class="tab" id="tabst" type="button">Student Lab</button></div>
+    <h2 id="settitle">Main plans</h2>
+    <div class="hgrid" id="hgrid"></div>
+    <div class="hint" id="setnote"></div>
+  </div>
+  <details class="card" id="more">
+    <summary>View more: all plans &amp; facilities</summary>
+    <div id="ptable" style="overflow-x:auto"></div>
+    <div class="hint">Free tools are included in every plan. The Max plan is the boss plan: all tools are free after you buy it.</div>
+  </details>
+<section class="card planbox">
+  <h2>Recent Purchases</h2>
+  <div id="plist"></div>
+  <div class="hint">Names are partly hidden to protect privacy.</div>
+</section>
+<section class="card planbox">
+  <h2>Verify a Plan Code</h2>
+  <input id="vcode" type="text" autocomplete="off" autocapitalize="characters" placeholder="e.g. KU/01/2026/0001">
+  <div style="height:10px"></div>
+  <button class="btn" id="vcheck" type="button">Verify Code</button>
+  <div id="vres" style="white-space:pre-line;margin-top:12px;font-weight:600;font-size:14px"></div>
+</section>
+
+<details class="card"><summary>Developer tools: plan link for your tool</summary><div style="margin-top:10px">
+  <button class="btn app" id="lgpre" type="button">Fill for Khatu Universal Science Study Lab</button>
+  <label for="lgtool">Tool name (shown to the user and on the receipt)</label>
+  <input id="lgtool" type="text" placeholder="e.g. AI Image Maker" maxlength="60">
+  <label for="lgset">Plan page</label><select id="lgset"><option value="main">Main plans</option><option value="groc">Groceries plans</option><option value="stud">Student Lab plans</option></select>
+  <label for="lgplan">Plan</label><select id="lgplan"></select>
+  <label for="lgret">Return URL (where the user goes after payment)</label>
+  <input id="lgret" type="text" placeholder="https://your-tool.com/upgrade" autocapitalize="off">
+  <div class="upi"><code id="lgout"></code><button class="copy" id="lgcopy" type="button">Copy</button></div>
+  <div class="hint">Put this link on the Upgrade button in your tool. The user lands here with the plan already selected, pays, enters the UTR and is sent back to your Return URL.</div>
+</div></details>
+</section>
+
+<section id="detailview" style="display:none"><div class="card" id="dcard"></div></section>
+
+<div class="grid" id="paywrap">
+  <section class="card">
+    <h2>1. Your selected plan</h2>
+    <div id="sel"></div>
+    <button class="btn app" id="chg" type="button" style="margin-top:10px" data-ico="back">Change plan</button>
+    <div class="hint" id="retnote"></div>
+    <label for="amount">Amount (INR)</label>
+    <input id="amount" type="number" readonly>
+    <label for="name">Your name (required)</label>
+    <input id="name" type="text" placeholder="Full name" maxlength="40">
+    <label for="email">Email for your receipt (required)</label>
+    <input id="email" type="email" placeholder="you@example.com" autocomplete="email" autocapitalize="off">
+    <h2 style="margin-top:20px">2. Pay with your app</h2>
+    <div class="apps">
+      <button class="btn app full" data-app="upi" type="button">Pay with any UPI app</button>
+      <button class="btn app" data-app="gpay" type="button">Google Pay</button>
+      <button class="btn app" data-app="phonepe" type="button">PhonePe</button>
+      <button class="btn app" data-app="paytm" type="button">Paytm</button>
+      <button class="btn app" data-app="bhim" type="button">BHIM / Others</button>
+    </div>
+    <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mu);margin:10px 0 0"><input type="checkbox" id="noamt" style="width:auto;margin:0"> Open the app without a pre-filled amount (try this if your app shows an error)</label>
+    <div class="hint">Tap your app. It opens with the amount filled in. If your app shows an error, scan the QR or copy the UPI ID and pay manually. The UTR number is needed only after the payment is done.</div>
+  </section>
+  <section class="card">
+    <h2>Scan QR to pay</h2>
+    <div class="qr"><div id="qr"></div></div>
+    <div class="cap" id="qrcap">Scan with any UPI app</div>
+    <button class="btn app" id="qrdl" type="button" style="margin-top:10px" data-ico="dl">Download QR</button>
+    <div class="upi"><code id="upiid"></code><button class="copy" id="copy" type="button">Copy</button></div>
+    <h2 style="margin-top:22px">3. Verify your payment</h2>
+    <ol class="steps"><li>Pay first using the buttons, QR or UPI ID.</li><li>After payment, copy the 12-digit UTR / Reference No. from your app.</li><li>Enter it below and submit.</li></ol>
+    <label for="utr">UTR / Transaction Reference No.</label>
+    <input id="utr" type="text" maxlength="12" autocomplete="off" autocapitalize="characters" placeholder="12-digit UTR number">
+    <div style="height:12px"></div>
+    <button class="btn" id="verify" type="button">Verify &amp; Submit Payment</button>
+  </section>
+</div>
+
+<section class="card planbox" id="planview" style="display:none">
+  <div class="pb" id="pbadge"></div>
+  <h2 id="ptitle" style="font-size:20px"></h2>
+  <div id="pwho" style="font-size:17px;font-weight:800;margin:2px 0 4px"></div>
+  <div class="rows">
+    <div id="ptoolrow"><span>Tool</span><b id="ptool"></b></div>
+    <div><span>Plan</span><b id="pplan"></b></div>
+    <div><span>Amount paid</span><b id="pamt"></b></div>
+    <div><span>Validity</span><b id="pval"></b></div>
+    <div><span>Started on</span><b id="pstart"></b></div>
+    <div><span>Expires on</span><b id="pexp"></b></div>
+    <div><span>Plan code</span><b><i id="pcode" style="font-style:normal"></i> <button class="copy" id="pcopy" type="button" style="padding:4px 10px;margin-left:6px">Copy</button></b></div>
+    <div><span>UTR</span><b id="putr"></b></div>
+  </div>
+  <div style="text-align:left;margin:4px 0 14px"><div style="font-size:14px;color:var(--mu);margin-bottom:6px">Tools included in your plan</div><ul id="ptools" style="margin:0;padding-left:20px;font-size:14px"></ul></div>
+  <div id="pbarw"><div class="bar"><i id="pbar"></i></div><div class="cap" id="pleft" style="margin-top:8px"></div></div>
+  <p class="hint" id="pmsg" style="font-size:14px;margin:14px 0"></p>
+  <button class="btn app" id="pmail" type="button" style="margin-bottom:6px">Email receipt</button>
+  <div class="hint" id="pmailnote" style="margin:0 0 10px"></div>
+  <div id="pret"><span id="pretxt"></span><button class="copy" id="pstay" type="button">Stay here</button></div>
+  <button class="btn" id="prenew" type="button"></button>
+</section>
+
+<p class="disc" id="disc" style="display:none">Disclaimer: Please ensure you enter the correct UTR number. Khatu Universal is not responsible for incorrect manual transfers.</p>
+</div>
+
+<div class="modal" id="modal"><div class="box">
+  <div class="ic" id="mic"></div><h3 id="mt"></h3><p id="mp"></p>
+  <button class="btn" id="mclose" type="button">OK</button>
+</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>document.getElementById("nhome").addEventListener("click", function(){ if (typeof showView !== "function") location.reload(); });</script>
+<script>
+/* SECURITY STANDARD: the UPI ID lives only here (encoded). It is NEVER shown as plain text; screens use UPI_SHOW (masked). */
+var UPI_ID = atob("a2hhdHV1bml2ZXJzYWxAYXhs"), PAYEE = "Khatu Universal", MAIL_ENDPOINT = "";
+function maskUpi(id){ var p = id.split("@"); return p[0].slice(0, 9) + new Array(p[0].length - 8).join("*") + "@" + p[1]; }
+var UPI_SHOW = maskUpi(UPI_ID);
+var $ = function(i){ return document.getElementById(i); };
+var ICONS = {home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>', plan:'<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/>', refresh:'<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>', dl:'<path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/>', cart:'<path d="M3 4h2l2.4 11h10.2L20 7H6"/><circle cx="9" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/>', back:'<path d="M15 5l-7 7 7 7"/>', check:'<path d="M5 12l5 5 9-10"/>', cross:'<path d="M6 6l12 12M18 6L6 18"/>', shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>', bolt:'<path d="M13 2L5 14h6l-1 8 8-12h-6z"/>', mail:'<path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/>'};
+function ico(n, s){ s = s || 16; return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">' + ICONS[n].replace(/<path /g, '<path pathLength="1" ') + '</svg>'; }
+var KEY = "ku_plan", USED = "ku_utrs", CODES = "ku_codes";
+var FREE = ["Free Tool 1","Free Tool 2","Free Tool 3"], PAIDALL = [], FREEG = ["Free Grocery Tool 1","Free Grocery Tool 2"], GPAID = [], PLANS = {}, ORDER = {main: [], groc: [], stud: []};
+for (var q = 1; q <= 12; q++) PAIDALL.push("Paid Tool " + q);
+for (q = 1; q <= 8; q++) GPAID.push("Grocery Tool " + q);
+function addPlan(set, price, o, hide){
+  var g = set === "groc"; o.price = price; o.set = set; o.id = ({main: "m", groc: "g", stud: "s"})[set] + price;
+  o.free = o.free || (g ? FREEG : FREE); o.all = o.all || (g ? GPAID : PAIDALL);
+  o.p = o.p || (o.boss ? o.all.slice() : o.all.slice(0, o.t)); PLANS[o.id] = o; if (!hide) ORDER[set].push(o.id);
+}
+addPlan("main", 24, {n:"Starter", m:1, v:"1 Month", c:"#14b8a6", t:1});
+addPlan("main", 49, {n:"Lite", m:1, v:"1 Month", c:"#0ea5e9", t:2});
+addPlan("main", 99, {n:"Bronze", m:1, v:"1 Month", c:"#cd7f32", t:3});
+addPlan("main", 149, {n:"Silver", m:1, v:"1 Month", c:"#8e9aaf", t:4});
+addPlan("main", 199, {n:"Pearl", m:1, v:"1 Month", c:"#a855f7", t:5});
+addPlan("main", 299, {n:"Gold", m:1, v:"1 Month", c:"#c99700", t:7});
+addPlan("main", 999, {n:"Platinum", m:1, v:"1 Month", c:"#6d83b8", t:9});
+addPlan("main", 1999, {n:"Diamond", m:1, v:"1 Month", c:"#2563eb", t:10});
+addPlan("main", 4999, {n:"Royal", m:1, v:"1 Month", c:"#7c3aed", t:11});
+addPlan("main", 5999, {n:"Max", m:1, v:"1 Month", c:"#e11d48", t:12, boss:1});
+addPlan("main", 7999, {n:"Max", m:12, v:"1 Year", c:"#e11d48", t:12, boss:1, yearly:1}, true);
+addPlan("groc", 18, {n:"Groceries Basic", m:1, v:"1 Month", c:"#16a34a", t:1});
+addPlan("groc", 49, {n:"Groceries Plus", m:1, v:"1 Month", c:"#0ea5e9", t:2});
+addPlan("groc", 99, {n:"Groceries Pro", m:1, v:"1 Month", c:"#f59e0b", t:4});
+addPlan("groc", 199, {n:"Groceries Boss", m:1, v:"1 Month", c:"#e11d48", t:8, boss:1});
+var SUBJ = ["Physics", "Chemistry", "Biology", "General Science", "Arts"], FREES = ["Free sample notes"];
+function addStud(price, name, c, ns, cnt, boss){
+  var u = cnt[1] === "Unlimited", txt = u ? "Unlimited notes and tests" : cnt[1] + " notes, " + cnt[2] + " tests";
+  addPlan("stud", price, {n:name, m:1, v:"1 Month", c:c, t:ns, boss:boss, stud:1, free:FREES, all:SUBJ, cnt:cnt, p:SUBJ.slice(0, ns).map(function(s){ return s + ": " + txt; }), sum:(u ? "Unlimited" : "Up to " + cnt[1]) + " notes per subject"});
+}
+addStud(39, "Study Starter", "#14b8a6", 2, [10, 10, 2]);
+addStud(69, "Study Basic", "#0ea5e9", 3, [20, 20, 4]);
+addStud(99, "Study Plus", "#f59e0b", 4, [30, 30, 6]);
+addStud(199, "Study Pro", "#7c3aed", 5, [60, 60, 12]);
+addStud(499, "Study Topper", "#e11d48", 5, ["Unlimited", "Unlimited", "Unlimited"], 1);
+var cur = null, curSet = "main", pendingView = false, timer = null, rt = null;
+
+function ls(k, v){ try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch(e){ return null; } }
+function jget(k, f){ try { return JSON.parse(ls(k)) || f; } catch(e){ return f; } }
+function fmt(t){ return new Date(t).toLocaleString("en-IN", {day:"numeric", month:"short", year:"numeric", hour:"numeric", minute:"2-digit"}); }
+function planColor(n){ for (var k in PLANS) if (PLANS[k].n === n) return PLANS[k].c; return "#00baf2"; }
+function maskName(n){ if (!n) return "Customer"; return n.trim().split(/\s+/).slice(0, 3).map(function(w){ return w.split("").map(function(ch, i){ return i % 2 ? "X" : ch.toUpperCase(); }).join(""); }).join(" "); }
+var confirming = false;
+function setIcon(kind){
+  var ic = $("mic");
+  if (kind === "coin") { ic.className = "ic"; ic.style.background = "transparent"; ic.innerHTML = '<div class="coin">₹</div>'; }
+  else if (kind === "ok") { ic.className = "ic ok"; ic.style.background = "var(--ok)"; ic.innerHTML = '<svg class="okc" width="38" height="38" viewBox="0 0 52 52" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M14 27l8 8 16-17"/></svg>'; }
+  else { ic.className = "ic"; ic.style.background = "var(--er)"; ic.innerHTML = ico("cross", 30); }
+}
+function anim(b, c){ b.classList.add(c); setTimeout(function(){ b.classList.remove(c); }, 800); }
+function confetti(){
+  var b = document.querySelector("#modal .box"), cols = ["#00baf2", "#ffb300", "#16a34a", "#e11d48", "#7c3aed"];
+  for (var i = 0; i < 26; i++) {
+    var c = document.createElement("i"); c.className = "cf"; c.style.left = Math.random() * 100 + "%"; c.style.background = cols[i % 5];
+    c.style.animationDelay = Math.random() * 0.4 + "s"; c.style.transform = "rotate(" + Math.random() * 360 + "deg)"; b.appendChild(c);
+    setTimeout((function(el){ return function(){ el.remove(); }; })(c), 2300);
+  }
+}
+function startConfirm(u){
+  confirming = true; setIcon("coin");
+  $("mt").textContent = "Confirming your payment"; $("mp").textContent = "Please wait. Do not close or refresh this page.";
+  $("mclose").style.display = "none"; $("modal").classList.add("show");
+  setTimeout(function(){ confirming = false; savePlan(u); sendReceipt(jget(KEY, null)); pendingView = true; show(true, "Payment Verified Successfully!", "Thank you for supporting Khatu Universal."); confetti(); }, 2600);
+}
+function show(ok, title, msg){
+  setIcon(ok ? "ok" : "er"); $("mclose").style.display = "";
+  $("mt").textContent = title; $("mp").textContent = msg; $("modal").classList.add("show");
+}
+
+/* ---------- views ---------- */
+function stopReturn(){ clearInterval(rt); rt = null; $("pret").style.display = "none"; }
+function startReturn(n, url){
+  stopReturn(); var s = n; $("pret").style.display = "flex";
+  function t(){ $("pretxt").textContent = "Returning to " + (url ? retHost() : "Home Page") + " in " + s + "s"; if (s <= 0) { stopReturn(); if (url) { try { window.top.location.href = url; } catch(e){ location.href = url; } } else showView("home"); return; } s--; }
+  t(); rt = setInterval(t, 1000);
+}
+function showView(v){
+  stopReturn(); $("modal").classList.remove("show");
+  $("homeview").style.display = v === "home" ? "block" : "none";
+  $("paywrap").style.display = v === "pay" ? "grid" : "none";
+  $("planview").style.display = v === "plan" ? "block" : "none";
+  $("detailview").style.display = v === "detail" ? "block" : "none";
+  $("disc").style.display = v === "pay" ? "block" : "none";
+  $("steps").style.display = (v === "pay" || v === "plan") ? "flex" : "none";
+  $("s2").className = "st" + (v === "plan" ? " done" : " on"); $("s3").className = "st" + (v === "plan" ? " on" : "");
+  window.scrollTo(0, 0);
+}
+function selectPlan(id){
+  cur = id; var p = PLANS[id], s = $("sel");
+  $("amount").value = p.price; s.style.setProperty("--pc", p.c); s.innerHTML = "<b></b><span></span>";
+  s.firstChild.textContent = p.n + " · ₹" + p.price;
+  s.lastChild.textContent = p.stud ? "Monthly · " + (p.boss ? "all" : p.t) + " subjects unlocked" : (p.yearly ? "Yearly" : "Monthly") + " · " + p.free.length + " free + " + (p.boss ? "all" : p.t) + " paid tools";
+  drawQR(); showView("pay"); retNote();
+}
+function pcard(id){
+  var p = PLANS[id], d = document.createElement("div");
+  d.className = "pcard" + (p.boss ? " max" : ""); d.style.setProperty("--pc", p.c);
+  var h = '<div class="h">' + p.n.toUpperCase() + (p.boss ? " · BOSS PLAN" : "") + '</div><div class="p">₹' + p.price + '<small> / month</small></div><ul><li>' + p.free.length + ' free tools</li><li>' + (p.stud ? (p.boss ? "All 5 subjects" : p.t + " subjects") + '</li><li>' + p.sum : (p.boss ? "ALL tools free" : p.t + " paid tools")) + '</li></ul>';
+  if (p.set === "main" && p.boss) h += '<div class="b2"><button type="button" class="b" data-s="' + id + '">Monthly ₹' + p.price + '</button><button type="button" class="b" data-s="m7999">Yearly ₹7999</button></div>';
+  else h += '<div class="b2"><button type="button" class="b" data-s="' + id + '">Select</button></div>';
+  d.innerHTML = h + '<button type="button" class="vm" data-v="' + id + '">View more</button>';
+  return d;
+}
+function buildHome(){
+  var g = $("hgrid"), t = "";
+  g.innerHTML = "";
+  ORDER[curSet].forEach(function(id, i){ var c = pcard(id); c.style.setProperty("--i", i); g.appendChild(c); });
+  ["main", "groc", "stud"].forEach(function(s){
+    t += '<h2 style="margin:14px 0 6px;font-size:14px">' + ({main: "Main plans", groc: "Groceries plans", stud: "Student Lab plans"})[s] + '</h2><table><tr><th>Plan</th><th>Price</th><th>Validity</th><th>Free tools</th><th>Paid tools</th></tr>';
+    ORDER[s].forEach(function(id){ var p = PLANS[id]; t += '<tr style="--pc:' + p.c + '"><td><span class="dot"></span><b>' + p.n + '</b></td><td>₹' + p.price + ' / month</td><td>1 Month</td><td>' + p.free.length + '</td><td>' + (p.stud ? p.t + " subjects" : (p.boss ? "All (free)" : p.t)) + '</td></tr>'; });
+    if (s === "main") t += '<tr style="--pc:#e11d48"><td><span class="dot"></span><b>Max Yearly</b></td><td>₹7999 / year</td><td>1 Year</td><td>' + FREE.length + '</td><td>All (free)</td></tr>';
+    t += "</table>";
+  });
+  $("ptable").innerHTML = t;
+  $("tabm").className = "tab" + (curSet === "main" ? " on" : ""); $("tabg").className = "tab" + (curSet === "groc" ? " on" : ""); $("tabst").className = "tab" + (curSet === "stud" ? " on" : "");
+  $("settitle").textContent = ({main: "Main plans", groc: "Groceries plans", stud: "Student Lab plans"})[curSet];
+  $("setnote").textContent = ({main: "All plans are billed per month. The Max plan can also be taken yearly for ₹7999.", groc: "All Groceries plans are billed per month.", stud: "Student Lab plans are billed per month. Tap View more to see the subject-wise details."})[curSet];
+}
+function studDetail(p, c, add){
+  add("div", "STUDENT LAB PLAN" + (p.boss ? " · BOSS PLAN" : ""), "font-size:12px;font-weight:800;letter-spacing:1px;color:" + p.c);
+  add("h2", p.n, "font-size:24px;margin:4px 0");
+  add("div", "₹" + p.price + " / month", "font-size:30px;font-weight:800;margin-bottom:12px;animation:pop .5s ease backwards");
+  add("div", "Subject-wise content", "font-weight:700");
+  add("div", "Valid for 1 Month from the day you pay.", "font-size:13px;color:#6b7a90;margin-bottom:8px");
+  var t = document.createElement("div"), h = '<table style="min-width:420px"><tr><th>Subject</th><th>Notes</th><th>Tests</th></tr>';
+  t.style.overflowX = "auto";
+  SUBJ.forEach(function(s, i){ var on = i < p.t; h += "<tr><td><b>" + s + "</b></td>" + (on ? "<td>" + p.cnt[1] + "</td><td>" + p.cnt[2] + "</td>" : '<td colspan="2" style="color:#6b7a90">Locked. Available in higher plans.</td>') + "</tr>"; });
+  t.innerHTML = h + "</table>"; c.appendChild(t);
+  add("div", "Free for every student", "font-weight:700;margin-top:14px");
+  add("div", "Free while your plan is active (1 Month).", "font-size:13px;color:#6b7a90");
+  var u = document.createElement("ul"); u.style.cssText = "margin:4px 0 12px;padding-left:20px;font-size:14px";
+  p.free.forEach(function(x){ var l = document.createElement("li"); l.textContent = x; u.appendChild(l); }); c.appendChild(u);
+  var b = document.createElement("div"); b.style.cssText = "display:flex;gap:8px;margin-top:14px;--pc:" + p.c;
+  b.innerHTML = '<button type="button" class="dbtn" data-s="' + p.id + '">Select this plan</button><button type="button" class="dbtn o" data-back="1">Back</button>';
+  c.appendChild(b); showView("detail");
+}
+function showDetail(id){
+  var p = PLANS[id], c = $("dcard"); c.innerHTML = ""; c.style.borderTop = "6px solid " + p.c;
+  if (p.stud) { studDetail(p, c, add); return; }
+  function add(tag, txt, st){ var e = document.createElement(tag); e.textContent = txt; if (st) e.style.cssText = st; c.appendChild(e); }
+  function list(arr, lock){ var u = document.createElement("ul"); u.style.cssText = "margin:4px 0 12px;padding-left:20px;font-size:14px" + (lock ? ";color:#6b7a90" : ""); arr.forEach(function(x){ var l = document.createElement("li"); l.textContent = x; u.appendChild(l); }); c.appendChild(u); }
+  add("div", (p.set === "groc" ? "GROCERIES PLAN" : "MAIN PLAN") + (p.boss ? " · BOSS PLAN" : ""), "font-size:12px;font-weight:800;letter-spacing:1px;color:" + p.c);
+  add("h2", p.n, "font-size:24px;margin:4px 0");
+  add("div", "₹" + p.price + (p.yearly ? " / year" : " / month"), "font-size:30px;font-weight:800;margin-bottom:12px;animation:pop .5s ease backwards");
+  add("div", "Validity", "font-weight:700");
+  add("div", p.v + " from the day you pay. Pay again after it ends to keep the plan.", "font-size:14px;color:#6b7a90;margin-bottom:12px");
+  add("div", "Free tools (" + p.free.length + ")", "font-weight:700");
+  add("div", "Free for " + p.v + ", for as long as your plan is active.", "font-size:13px;color:#6b7a90");
+  list(p.free);
+  add("div", p.boss ? "Paid tools: ALL unlocked, free with this plan" : "Paid tools unlocked (" + p.t + ")", "font-weight:700");
+  add("div", "Unlocked for " + p.v + ".", "font-size:13px;color:#6b7a90");
+  list(p.p);
+  var lock = p.all.filter(function(x){ return p.p.indexOf(x) < 0; });
+  if (lock.length) { add("div", "Not in this plan (" + lock.length + ")", "font-weight:700"); add("div", "Available in higher plans.", "font-size:13px;color:#6b7a90"); list(lock, true); }
+  if (p.set === "main" && p.boss) { add("div", "Yearly option", "font-weight:700"); add("div", "Pay ₹7999 once to get Max for 12 months. Yearly is available only in Main plans.", "font-size:13px;color:#6b7a90;margin-bottom:8px"); }
+  var b = document.createElement("div"); b.style.cssText = "display:flex;gap:8px;margin-top:14px;--pc:" + p.c;
+  b.innerHTML = '<button type="button" class="dbtn" data-s="' + id + '">' + (p.boss && p.set === "main" ? "Monthly ₹" + p.price : "Select this plan") + '</button>' + (p.boss && p.set === "main" ? '<button type="button" class="dbtn" data-s="m7999">Yearly ₹7999</button>' : '') + '<button type="button" class="dbtn o" data-back="1">Back</button>';
+  c.appendChild(b); showView("detail");
+}
+
+/* ---------- payment ---------- */
+function params(skipAmt){
+  var a = parseFloat($("amount").value), p = "pa=" + UPI_ID + "&pn=" + encodeURIComponent(PAYEE) + "&cu=INR";
+  if (a > 0 && !skipAmt) p += "&am=" + a.toFixed(2);
+  return p;
+}
+function drawQR(){
+  var box = $("qr"), a = parseFloat($("amount").value); box.innerHTML = "";
+  try { new QRCode(box, {text: "upi://pay?" + params(), width: 180, height: 180, correctLevel: QRCode.CorrectLevel.M}); } catch(e){ box.textContent = "QR unavailable"; }
+  $("qrcap").textContent = a > 0 ? "Scan to pay ₹" + a.toFixed(2) : "Scan with any UPI app";
+}
+var isAndroid = /android/i.test(navigator.userAgent);
+var schemes = {upi:"upi://pay?", gpay:"tez://upi/pay?", phonepe:"phonepe://pay?", paytm:"paytmmp://pay?", bhim:"upi://pay?"};
+var pkgs = {gpay:"com.google.android.apps.nbu.paisa.user", phonepe:"com.phonepe.app", paytm:"net.one97.paytm", bhim:"in.org.npci.upiapp"};
+function launch(url){
+  var l = document.createElement("a"); l.href = url; l.target = "_top"; l.rel = "noopener"; l.style.display = "none";
+  document.body.appendChild(l); l.click(); document.body.removeChild(l);
+}
+document.querySelector(".apps").addEventListener("click", function(e){
+  var b = e.target.closest("[data-app]"); if (!b) return;
+  var k = b.dataset.app, a = parseFloat($("amount").value);
+  if (!(a > 0)) { show(false, "Select a Plan", "Please choose a plan from the Home Page first."); return; }
+  var sk = $("noamt").checked, pr = params(sk), url = schemes[k] + pr;
+  try { navigator.clipboard.writeText(UPI_ID); } catch(e){}
+  if (isAndroid && pkgs[k]) url = "intent://pay?" + pr + "#Intent;scheme=upi;package=" + pkgs[k] + ";end";
+  launch(url);
+  setTimeout(function(){ if (!document.hidden) show(false, "App Did Not Open", "The app did not open (previews also block payment apps). Your UPI ID is copied: open any UPI app, pay to it and type the amount yourself, or scan the QR. Then enter your UTR below."); }, 2500);
+});
+function copyText(t, btn){
+  var old = btn.textContent;
+  function ok(){ btn.textContent = "Copied"; setTimeout(function(){ btn.textContent = old; }, 1500); }
+  function fb(){
+    var i = document.createElement("textarea"); i.value = t; i.setAttribute("readonly", ""); i.style.cssText = "position:fixed;top:0;left:0;opacity:0;font-size:16px";
+    document.body.appendChild(i); i.focus(); i.select(); i.setSelectionRange(0, t.length);
+    var done = false; try { done = document.execCommand("copy"); } catch(e){} document.body.removeChild(i);
+    if (done) ok(); else if (t === UPI_ID) { btn.textContent = "Copy failed"; setTimeout(function(){ btn.textContent = old; }, 1500); } else window.prompt("Copy this:", t);
+  }
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(ok, fb); else fb();
+}
+function downloadQR(){
+  var tmp = document.createElement("div"), amt = parseFloat($("amount").value);
+  tmp.style.cssText = "position:fixed;left:-9999px;top:0"; document.body.appendChild(tmp);
+  try { new QRCode(tmp, {text: "upi://pay?" + params(), width: 400, height: 400, correctLevel: QRCode.CorrectLevel.M}); } catch(e){ tmp.remove(); return; }
+  var src = tmp.querySelector("canvas"); if (!src) { tmp.remove(); return; }
+  var c = document.createElement("canvas"), g = c.getContext("2d");
+  c.width = 800; c.height = 1000;
+  g.fillStyle = "#fff"; g.fillRect(0, 0, 800, 1000); g.textAlign = "center";
+  g.fillStyle = "#002e6e"; g.font = "bold 46px Arial, sans-serif"; g.fillText("KHATU UNIVERSAL", 400, 90);
+  g.fillStyle = "#6b7a90"; g.font = "28px Arial, sans-serif"; g.fillText("Scan with any UPI app to pay", 400, 138);
+  var gr = g.createLinearGradient(50, 0, 750, 0); gr.addColorStop(0, "#ff9933"); gr.addColorStop(0.5, "#000080"); gr.addColorStop(1, "#138808");
+  g.strokeStyle = gr; g.lineWidth = 46; g.lineCap = "round"; g.beginPath();
+  for (var i = 0; i <= 200; i++) { var t = i / 200 * Math.PI * 2, d = 1 + Math.sin(t) * Math.sin(t), x = 400 + 330 * Math.cos(t) / d, y = 460 + 560 * Math.sin(t) * Math.cos(t) / d; if (i) g.lineTo(x, y); else g.moveTo(x, y); }
+  g.stroke();
+  g.fillStyle = "#fff"; g.fillRect(180, 260, 440, 440); g.drawImage(src, 200, 280, 400, 400);
+  g.fillStyle = gr; g.font = "bold 120px Arial, sans-serif"; g.fillText("KU", 400, 820);
+  g.fillStyle = "#0b2447"; g.font = "bold 32px Arial, sans-serif"; g.fillText(UPI_SHOW, 400, 880);
+  if (amt > 0) { g.font = "bold 40px Arial, sans-serif"; g.fillText("Pay ₹" + amt.toFixed(2), 400, 940); }
+  tmp.remove();
+  c.toBlob(function(b){ if (!b) return; var u = URL.createObjectURL(b), l = document.createElement("a"); l.href = u; l.download = "Khatu-Universal-QR.png"; document.body.appendChild(l); l.click(); l.remove(); setTimeout(function(){ URL.revokeObjectURL(u); }, 4000); });
+}
+
+/* ---------- plan, slip, list ---------- */
+function validUTR(u){ return /^[A-Za-z0-9]{12}$/.test(u) && !/^(.)\1{11}$/.test(u); }
+function makeCode(u, s){ var h = 0, t = u.toUpperCase(); for (var i = 0; i < t.length; i++) h = (h * 31 + t.charCodeAt(i)) % 10000; return "KU/01/" + s.getFullYear() + "/" + ("000" + h).slice(-4); }
+function savePlan(u){
+  var a = parseFloat($("amount").value), p = PLANS[cur], s = new Date(), x = null;
+  if (p) { x = new Date(s.getTime()); x.setMonth(x.getMonth() + p.m); }
+  var d = {plan: p ? p.n : "Plan", validity: p ? p.v : "", amount: a > 0 ? a : 0, utr: u.toUpperCase(), name: $("name").value.trim(), start: s.getTime(), expiry: x ? x.getTime() : null, code: makeCode(u, s), tool: TOOL, email: $("email").value.trim()};
+  ls(KEY, JSON.stringify(d));
+  var r = jget(CODES, {}); r[d.code] = d; ls(CODES, JSON.stringify(r));
+  var l = jget(USED, []); l.push(d.utr); ls(USED, JSON.stringify(l));
+}
+function tick(){
+  var d = jget(KEY, null); if (!d || !d.expiry) return;
+  var left = d.expiry - Date.now();
+  if (left <= 0) { render(); return; }
+  var s = Math.floor(left / 1000), dd = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60);
+  $("pleft").textContent = "Time left: " + dd + "d " + h + "h " + m + "m " + (s % 60) + "s";
+  $("pbar").style.width = Math.max(2, left / (d.expiry - d.start) * 100) + "%";
+}
+function renderList(){
+  var r = jget(CODES, {}), box = $("plist");
+  var a = Object.keys(r).map(function(k){ return r[k]; }).sort(function(x, y){ return y.start - x.start; }).slice(0, 10);
+  box.innerHTML = "";
+  if (!a.length) { box.textContent = "No purchases yet."; return; }
+  a.forEach(function(d){
+    var row = document.createElement("div"), l = document.createElement("div"), rr = document.createElement("div");
+    row.className = "prow"; row.style.setProperty("--pc", planColor(d.plan));
+    l.innerHTML = "<b></b><small></small>"; l.firstChild.textContent = maskName(d.name); l.lastChild.textContent = d.plan + " · " + fmt(d.start);
+    rr.className = "pamt2"; rr.textContent = d.amount > 0 ? "₹" + d.amount : "—";
+    row.appendChild(l); row.appendChild(rr); box.appendChild(row);
+  });
+}
+function render(){
+  clearInterval(timer); renderList();
+  var d = jget(KEY, null), m = $("mine");
+  if (!d) { m.style.display = "none"; return; }
+  var exp = d.expiry, expired = exp && Date.now() >= exp, c = planColor(d.plan);
+  m.style.display = "flex"; m.style.setProperty("--pc", c);
+  $("minetx").textContent = expired ? d.plan + " plan expired. Buy again." : d.plan + " plan active · " + (exp ? "until " + fmt(exp) : "Lifetime");
+  var pv = $("planview"); pv.style.borderTop = "6px solid " + c;
+  $("pbadge").textContent = expired ? "EXPIRED" : "ACTIVE"; $("pbadge").style.background = expired ? "var(--er)" : c;
+  $("ptitle").textContent = d.plan + (expired ? " plan has expired" : " plan is active");
+  $("pwho").textContent = d.name ? "Name: " + d.name : "";
+  $("pplan").textContent = d.plan;
+  $("ptoolrow").style.display = d.tool ? "flex" : "none"; $("ptool").textContent = d.tool || "";
+  $("pmailnote").textContent = MAIL_ENDPOINT ? "Receipt request sent to " + (d.email || "your email") + "." : "Tap Email receipt to send it from your own mail app.";
+  $("pamt").textContent = d.amount > 0 ? "₹" + d.amount.toFixed(2) : "—";
+  $("pval").textContent = d.validity || "—";
+  $("pstart").textContent = fmt(d.start);
+  $("pexp").textContent = exp ? fmt(exp) : "Lifetime";
+  $("pcode").textContent = d.code || "—";
+  $("putr").textContent = d.utr.slice(0, 4) + "****" + d.utr.slice(-4);
+  var pp = null; for (var k in PLANS) if (PLANS[k].n === d.plan) pp = PLANS[k];
+  var ul = $("ptools"); ul.innerHTML = "";
+  if (pp) pp.free.map(function(t){ return "Free · " + t; }).concat(pp.p.map(function(t){ return "Paid · " + t; })).forEach(function(t){ var li = document.createElement("li"); li.textContent = t; ul.appendChild(li); });
+  var live = exp && !expired;
+  $("pbarw").style.display = live ? "block" : "none";
+  $("pmsg").textContent = expired ? "Your plan ended on " + fmt(exp) + ". Please remove it and make a new payment to continue." : (exp ? "Everything included in your plan stays available until the expiry time shown above." : "Thank you for supporting Khatu Universal.");
+  $("prenew").style.display = expired ? "block" : "none"; $("prenew").textContent = "Remove & Pay Again";
+  if (live) { tick(); timer = setInterval(tick, 1000); }
+}
+
+/* ---------- events ---------- */
+$("upiid").textContent = UPI_SHOW;
+function scrubUpi(root){
+  var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), n, list = [];
+  while ((n = w.nextNode())) if (n.nodeValue.indexOf(UPI_ID) > -1) list.push(n);
+  list.forEach(function(t){ t.nodeValue = t.nodeValue.split(UPI_ID).join(UPI_SHOW); });
+}
+scrubUpi(document.body);
+new MutationObserver(function(){ scrubUpi(document.body); }).observe(document.body, {childList:true, subtree:true, characterData:true});
+$("verify").addEventListener("click", function(){
+  var u = $("utr").value.trim();
+  if (!cur || !PLANS[cur]) { show(false, "Select a Plan", "Please choose a plan from the Home Page first."); return; }
+  if (!$("name").value.trim()) { show(false, "Name Required", "Please enter your name above so it can be shown on your payment slip."); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($("email").value.trim())) { show(false, "Email Required", "Please enter a valid email address so we can send your receipt."); return; }
+  if (validUTR(u) && jget(USED, []).indexOf(u.toUpperCase()) > -1) show(false, "UTR Already Used", "This UTR has already been submitted on this device. Please enter the UTR of your new payment.");
+  else if (validUTR(u)) startConfirm(u);
+  else show(false, "Payment Not Accepted!", "This UTR number is incorrect or invalid. Please enter a valid transaction reference.");
+});
+$("mclose").addEventListener("click", function(){
+  $("modal").classList.remove("show");
+  if (pendingView) { pendingView = false; $("utr").value = ""; render(); showView("plan"); startReturn(RET ? 3 : 10, RET ? buildRet() : null); }
+});
+$("modal").addEventListener("click", function(e){ if (e.target === $("modal") && !confirming) $("modal").classList.remove("show"); });
+$("qr").addEventListener("click", function(){ var a = parseFloat($("amount").value); show(true, "Pay to this UPI ID", UPI_SHOW + (a > 0 ? "  ·  ₹" + a.toFixed(2) : "") + " — Scan the QR with any UPI app, or copy this ID and pay manually."); });
+$("copy").addEventListener("click", function(){ copyText(UPI_ID, $("copy")); });
+$("pcopy").addEventListener("click", function(){ var d = jget(KEY, null); if (d) copyText(d.code, $("pcopy")); });
+$("qrdl").addEventListener("click", downloadQR);
+$("chg").addEventListener("click", function(){ showView("home"); });
+$("pstay").addEventListener("click", stopReturn);
+$("prenew").addEventListener("click", function(){ ls(KEY, null); render(); showView("home"); });
+$("mineb").addEventListener("click", function(){ showView("plan"); });
+$("nhome").addEventListener("click", function(){ anim($("nhome"), "draw"); showView("home"); });
+$("nplan").addEventListener("click", function(){ anim($("nplan"), "draw");
+  if (jget(KEY, null)) { render(); showView("plan"); }
+  else { showView("home"); $("more").open = true; $("more").scrollIntoView(); }
+});
+$("nrefresh").addEventListener("click", function(){ anim($("nrefresh"), "spin"); setTimeout(function(){ location.reload(); }, 650); });
+$("vcheck").addEventListener("click", function(){
+  var c = $("vcode").value.trim().toUpperCase(), d = jget(CODES, {})[c], o = $("vres");
+  if (!d) { o.textContent = "Code not found. Please check the code and try again."; o.style.color = "var(--er)"; return; }
+  var gone = d.expiry && Date.now() >= d.expiry;
+  o.textContent = "Verified by Khatu Universal\n" + d.plan + (d.validity ? " · " + d.validity : "") + "\n" + (!d.expiry ? "Lifetime" : (gone ? "Expired on " : "Valid until ") + fmt(d.expiry));
+  o.style.color = gone ? "var(--er)" : "var(--ok)";
+});
+document.addEventListener("click", function(e){
+  var b = e.target.closest ? e.target.closest("button") : null; if (!b) return;
+  var r = b.getBoundingClientRect(), s = Math.max(r.width, r.height), d = document.createElement("span");
+  d.className = "rip"; d.style.width = d.style.height = s + "px";
+  d.style.left = (e.clientX - r.left - s / 2) + "px"; d.style.top = (e.clientY - r.top - s / 2) + "px";
+  b.appendChild(d); setTimeout(function(){ d.remove(); }, 650);
+}, true);
+function setTheme(t){ document.documentElement.setAttribute("data-theme", t); ls("ku_theme", t); }
+if (ls("ku_theme") === "dark") document.documentElement.setAttribute("data-theme", "dark");
+$("dn").addEventListener("click", function(){ setTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark"); });
+[].forEach.call(document.querySelectorAll(".dl"), function(el){ el.addEventListener("click", function(){ setTheme(el.dataset.t); }); });
+document.addEventListener("visibilitychange", function(){ if (!document.hidden) render(); });
+var fw = ["Khatu Payment", "Khatu Page", "Khatu Plan"], fi = 0;
+setInterval(function(){ var h = $("flip"); fi = (fi + 1) % fw.length; h.style.animation = "none"; void h.offsetWidth; h.textContent = fw[fi]; h.style.animation = "flipx .5s ease-out"; }, 2400);
+var QS = new URLSearchParams(location.search);
+(function(){
+  var t = location.hash.replace(/^#/, "");
+  if (!/^[A-Za-z0-9_-]{8,}$/.test(t)) return;
+  try {
+    var o = JSON.parse(decodeURIComponent(escape(atob(t.replace(/-/g, "+").replace(/_/g, "/")))));
+    ["tool", "set", "return", "plan", "ref"].forEach(function(k){ if (o[k] && !QS.has(k)) QS.set(k, o[k]); });
+  } catch(e){}
+})();
+var RET = "", REF = QS.get("ref") || "", TOOL = (QS.get("tool") || "").slice(0, 60);
+(function(){ var r = QS.get("return"); if (r && /^https?:\/\//i.test(r)) RET = r; })();
+function retHost(){ try { return new URL(RET).hostname; } catch(e){ return RET; } }
+function retNote(){ $("retnote").textContent = (TOOL ? "Tool: " + TOOL + ". " : "") + (RET ? "After payment you will be sent back to " + retHost() + "." : ""); }
+function buildRet(){
+  var d = jget(KEY, null), e = encodeURIComponent; if (!d) return RET;
+  return RET + (RET.indexOf("?") > -1 ? "&" : "?") + "status=success&plan=" + e(d.plan) + "&amount=" + d.amount + "&code=" + e(d.code) + (d.tool ? "&tool=" + e(d.tool) : "") + "&expiry=" + (d.expiry || "lifetime") + (REF ? "&ref=" + e(REF) : "");
+}
+var lp = $("lgplan"), o0 = document.createElement("option"); o0.value = ""; o0.textContent = "Let the user choose the plan"; lp.appendChild(o0);
+Object.keys(PLANS).forEach(function(k){ var o = document.createElement("option"); o.value = k; o.textContent = PLANS[k].n + " (₹" + PLANS[k].price + (PLANS[k].yearly ? " yearly" : "") + ")"; lp.appendChild(o); });
+function lg(){ var base = location.href.split("#")[0].split("?")[0], r = $("lgret").value.trim(), t = $("lgtool").value.trim(), q = []; if (t) q.push("tool=" + encodeURIComponent(t)); if ($("lgset").value !== "main") q.push("set=" + $("lgset").value); if (lp.value) q.push("plan=" + lp.value); if (r) q.push("return=" + encodeURIComponent(r)); $("lgout").textContent = base + (q.length ? "?" + q.join("&") : ""); }
+lp.addEventListener("change", lg); $("lgret").addEventListener("input", lg); $("lgtool").addEventListener("input", lg); $("lgset").addEventListener("change", lg); lg();
+$("lgpre").addEventListener("click", function(){ $("lgtool").value = "Khatu Universal Science Study Lab"; $("lgset").value = "stud"; lp.value = ""; lg(); });
+$("tabm").addEventListener("click", function(){ curSet = "main"; buildHome(); });
+$("tabg").addEventListener("click", function(){ curSet = "groc"; buildHome(); });
+$("tabst").addEventListener("click", function(){ curSet = "stud"; buildHome(); });
+$("hgrid").addEventListener("click", function(e){ var s = e.target.closest("[data-s]"), v = e.target.closest("[data-v]"); if (s) selectPlan(s.dataset.s); else if (v) showDetail(v.dataset.v); });
+$("dcard").addEventListener("click", function(e){ var s = e.target.closest("[data-s]"); if (s) selectPlan(s.dataset.s); else if (e.target.closest("[data-back]")) showView("home"); });
+function receiptText(d){
+  return "Hello " + d.name + ",\n\nYou purchased " + (d.tool ? d.tool + " " : "") + "from the Khatu Universal Plan Page.\n\nTool: " + (d.tool || "-") + "\nPlan: " + d.plan + "\nAmount paid: Rs " + d.amount.toFixed(2) + "\nValidity: " + d.validity + "\nStarted on: " + fmt(d.start) + "\nExpires on: " + (d.expiry ? fmt(d.expiry) : "Lifetime") + "\nPlan code: " + d.code + "\nUTR: " + d.utr.slice(0, 4) + "****" + d.utr.slice(-4) + "\n\nThank you for supporting Khatu Universal.";
+}
+function sendReceipt(d){
+  if (!d || !d.email || !MAIL_ENDPOINT) return;
+  try { fetch(MAIL_ENDPOINT, {method: "POST", mode: "no-cors", headers: {"Content-Type": "text/plain"}, body: JSON.stringify({to: d.email, subject: "Khatu Universal receipt: " + d.plan + " plan", text: receiptText(d)})}); } catch(e){}
+}
+$("pmail").addEventListener("click", function(){
+  var d = jget(KEY, null); if (!d) return;
+  if (MAIL_ENDPOINT) { sendReceipt(d); $("pmailnote").textContent = "Receipt request sent to " + d.email + "."; }
+  else location.href = "mailto:" + (d.email || "") + "?subject=" + encodeURIComponent("Khatu Universal receipt: " + d.plan + " plan") + "&body=" + encodeURIComponent(receiptText(d));
+});
+$("lgcopy").addEventListener("click", function(){ copyText($("lgout").textContent, $("lgcopy")); });
+[].forEach.call(document.querySelectorAll("[data-ico]"), function(el){ el.innerHTML = ico(el.dataset.ico) + el.textContent; });
+if (QS.get("set") === "groc" || QS.get("set") === "stud") curSet = QS.get("set");
+buildHome(); render();
+if (TOOL) { $("toolnote").style.display = "block"; $("toolnote").textContent = "Upgrading: " + TOOL + ". Choose your plan below."; }
+var qp = QS.get("plan") || ""; if (/^\d+$/.test(qp)) qp = "m" + qp;
+if (qp && PLANS[qp]) selectPlan(qp); else showView("home");
+</script>
+</body>
+</html>
